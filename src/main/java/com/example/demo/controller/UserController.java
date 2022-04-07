@@ -17,9 +17,10 @@ public class UserController {
         return userService.create(user);
     }
 
-    @GetMapping("/users/{current}")
-    public User getCurrentUSer(@PathVariable String login) {
-        return userService.getCurrentUser(login);
+    @GetMapping("/users/current")
+    public User getCurrentUser() {
+
+        return userService.getCurrentUser();
     }
 
 }
