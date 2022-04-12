@@ -1,4 +1,4 @@
-package bcm.app.controller.hub;
+package bcm.app.model.hub;
 
 public class SapBuf {
     private String sap;
