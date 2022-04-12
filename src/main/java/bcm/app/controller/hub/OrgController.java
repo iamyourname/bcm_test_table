@@ -17,8 +17,7 @@ public class OrgController {
     @Autowired
     private OrgRepository orgRepository;
 
-    @Autowired
-    private AgentRepository agentRepository;
+
 
     @GetMapping("/orgs")
     public Iterable<Org> getAll() {//получить все записи
@@ -27,10 +26,10 @@ public class OrgController {
 
 
     @PostMapping("/orgs")
-    public Long getNameSap(@RequestBody Org org) {
+    public List getAgent(@RequestBody Org org) {
         //System.out.println(org.getCodv_code());
-        Long c_id=orgRepository.getCodvIdByCodvCode(org.getCodv_code());
-        Long a_id = agentRepository.getAgentByCodvId(c_id);
-        return a_id;
+        List<String> hh = orgRepository.getAgentByCodvCode(org.getCodv_code());
+        //System.out.println(hh.get(0));
+        return orgRepository.getAgentByCodvCode(org.getCodv_code());
     }
 }

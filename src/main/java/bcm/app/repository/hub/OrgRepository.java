@@ -12,4 +12,7 @@ public interface OrgRepository
 
     @Query("SELECT codv_id FROM Org where codv_code=:codv_code")
     Long getCodvIdByCodvCode(@Param("codv_code") String codv_code);
+
+    @Query("SELECT a.a_agent_id, o.codv_id, o.codv_name FROM Org o join Agent a on a.codv_id =o.codv_id where o.codv_code=:codv_code")
+    List<String> getAgentByCodvCode(@Param("codv_code") String codv_code);
 }
