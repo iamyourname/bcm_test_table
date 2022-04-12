@@ -28,8 +28,8 @@ public class OrgController {
     @PostMapping("/orgs")
     public List getAgent(@RequestBody Org org) {
         //System.out.println(org.getCodv_code());
-        List<String> hh = orgRepository.getAgentByCodvCode(org.getCodv_code());
+        List<String> hh = orgRepository.getInfoByCodvCode(org.getCodv_code());
         //System.out.println(hh.get(0));
-        return orgRepository.getAgentByCodvCode(org.getCodv_code());
+        return orgRepository.getInfoByCodvCode(org.getCodv_code());
     }
 }

@@ -1,13 +1,13 @@
 package bcm.app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -16,22 +16,21 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
-@Configuration
-@PropertySource({ "classpath:datasource-cfg.properties" })
-@EnableJpaRepositories(
-        basePackages = "bcm.app.repository.agent",
+@PropertySource({"classpath:datasource-cfg.properties"})
+@EnableJpaRepositories(basePackages =  "bcm.app.repository.agent02",
         entityManagerFactoryRef = "agentEntityManager",
-        transactionManagerRef = "agentTransactionManager"
-)
-public class PersistenceAgentConfiguration {
+        transactionManagerRef = "agentTransactionManager")
+public class PersistenceAgent02AutoConfiguration {
 
     @Autowired
     private Environment env;
 
+    /*
+
+     */
     @Primary
     @Bean
     public LocalContainerEntityManagerFactoryBean agentEntityManager() {
-        System.out.println("loading config");
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(agentDataSource());
         em.setPackagesToScan("bcm.app.model.agent");
@@ -46,25 +45,18 @@ public class PersistenceAgentConfiguration {
         return em;
     }
 
-    @Primary
     @Bean
+    @Primary
+    @ConfigurationProperties(prefix="spring.datasource")
     public DataSource agentDataSource() {
-        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("ag.jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("ag.jdbc.url"));
-        dataSource.setUsername(env.getProperty("ag.jdbc.user"));
-        dataSource.setPassword(env.getProperty("ag.jdbc.pass"));
-        return dataSource;
+        return DataSourceBuilder.create().build();
     }
 
     @Primary
     @Bean
     public PlatformTransactionManager agentTransactionManager() {
-
-        JpaTransactionManager transactionManager
-                = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(
-                agentEntityManager().getObject());
+        final JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(agentEntityManager().getObject());
         return transactionManager;
     }
 
