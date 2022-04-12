@@ -18,8 +18,8 @@ import java.util.HashMap;
 
 @PropertySource({"classpath:datasource-cfg.properties"})
 @EnableJpaRepositories(basePackages =  "bcm.app.repository.agent02",
-        entityManagerFactoryRef = "agentEntityManager",
-        transactionManagerRef = "agentTransactionManager")
+        entityManagerFactoryRef = "agent02EntityManager",
+        transactionManagerRef = "agent02TransactionManager")
 public class PersistenceAgent02AutoConfiguration {
 
     @Autowired
@@ -30,10 +30,10 @@ public class PersistenceAgent02AutoConfiguration {
      */
     @Primary
     @Bean
-    public LocalContainerEntityManagerFactoryBean agentEntityManager() {
+    public LocalContainerEntityManagerFactoryBean agent02EntityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(agentDataSource());
-        em.setPackagesToScan("bcm.app.model.agent");
+        em.setDataSource(agent02DataSource());
+        em.setPackagesToScan("bcm.app.model.agent02");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -48,15 +48,15 @@ public class PersistenceAgent02AutoConfiguration {
     @Bean
     @Primary
     @ConfigurationProperties(prefix="spring.datasource")
-    public DataSource agentDataSource() {
+    public DataSource agent02DataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Primary
     @Bean
-    public PlatformTransactionManager agentTransactionManager() {
+    public PlatformTransactionManager agent02TransactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(agentEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(agent02EntityManager().getObject());
         return transactionManager;
     }
 

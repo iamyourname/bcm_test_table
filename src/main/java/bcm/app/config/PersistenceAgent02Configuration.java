@@ -20,8 +20,8 @@ import java.util.HashMap;
 @PropertySource({ "classpath:datasource-cfg.properties" })
 @EnableJpaRepositories(
         basePackages = "bcm.app.repository.agent02",
-        entityManagerFactoryRef = "agentEntityManager",
-        transactionManagerRef = "agentTransactionManager"
+        entityManagerFactoryRef = "agent02EntityManager",
+        transactionManagerRef = "agent02TransactionManager"
 )
 public class PersistenceAgent02Configuration {
 
@@ -30,10 +30,10 @@ public class PersistenceAgent02Configuration {
 
     @Primary
     @Bean
-    public LocalContainerEntityManagerFactoryBean agentEntityManager() {
+    public LocalContainerEntityManagerFactoryBean agent02EntityManager() {
         System.out.println("loading config");
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(agentDataSource());
+        em.setDataSource(agent02DataSource());
         em.setPackagesToScan("bcm.app.model.agent02");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -48,7 +48,7 @@ public class PersistenceAgent02Configuration {
 
     @Primary
     @Bean
-    public DataSource agentDataSource() {
+    public DataSource agent02DataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("agent02.jdbc.driverClassName"));
         dataSource.setUrl(env.getProperty("agent02.jdbc.url"));
@@ -59,12 +59,12 @@ public class PersistenceAgent02Configuration {
 
     @Primary
     @Bean
-    public PlatformTransactionManager agentTransactionManager() {
+    public PlatformTransactionManager agent02TransactionManager() {
 
         JpaTransactionManager transactionManager
                 = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(
-                agentEntityManager().getObject());
+                agent02EntityManager().getObject());
         return transactionManager;
     }
 
