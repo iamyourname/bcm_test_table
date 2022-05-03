@@ -19,23 +19,22 @@ import java.util.HashMap;
 @Configuration
 @PropertySource({ "classpath:datasource-cfg.properties" })
 @EnableJpaRepositories(
-        basePackages = "bcm.app.repository.agent02",
-        entityManagerFactoryRef = "agent02EntityManager",
-        transactionManagerRef = "agent02TransactionManager"
+        basePackages = "bcm.app.repository.agent",
+        entityManagerFactoryRef = "agentEntityManager",
+        transactionManagerRef = "agentTransactionManager"
 )
-public class PersistenceAgent02Configuration {
+public class PersistenceAgentConfiguration {
 
     @Autowired
     private Environment env;
 
     @Primary
     @Bean
-    public LocalContainerEntityManagerFactoryBean agent02EntityManager() {
+    public LocalContainerEntityManagerFactoryBean agentEntityManager() {
         System.out.println("loading config");
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(agent02DataSource());
-        em.setPackagesToScan("bcm.app.model.agent02");
-
+        em.setDataSource(agentDataSource());
+        em.setPackagesToScan("bcm.app.model.agent");
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         final HashMap<String, Object> properties = new HashMap<String, Object>();
@@ -48,23 +47,23 @@ public class PersistenceAgent02Configuration {
 
     @Primary
     @Bean
-    public DataSource agent02DataSource() {
+    public DataSource agentDataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("agent02.jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("agent02.jdbc.url"));
-        dataSource.setUsername(env.getProperty("agent02.jdbc.user"));
-        dataSource.setPassword(env.getProperty("agent02.jdbc.pass"));
+        dataSource.setDriverClassName(env.getProperty("agent.jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("agent.jdbc.url"));
+        dataSource.setUsername(env.getProperty("agent.jdbc.user"));
+        dataSource.setPassword(env.getProperty("agent.jdbc.pass"));
         return dataSource;
     }
 
     @Primary
     @Bean
-    public PlatformTransactionManager agent02TransactionManager() {
+    public PlatformTransactionManager agentTransactionManager() {
 
         JpaTransactionManager transactionManager
                 = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(
-                agent02EntityManager().getObject());
+                agentEntityManager().getObject());
         return transactionManager;
     }
 

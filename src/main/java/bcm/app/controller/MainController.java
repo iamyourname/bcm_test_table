@@ -1,13 +1,12 @@
 package bcm.app.controller;
 
-import bcm.app.model.hub.SapBuf;
-import bcm.app.repository.agent02.BoutRepository;
-import bcm.app.repository.hub.OrgRepository;
+
+import bcm.app.model.agent.Person;
+import bcm.app.repository.agent.PersonsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -15,12 +14,27 @@ import java.util.List;
 @Controller
 public class MainController {
 
+
     @Autowired
+    private PersonsRepository personsRepository;
+
+    @GetMapping("/")
+    public String index(Model model) {
+        return "index";
+    }
+
+    @PostMapping("/")
+    public String allPersons() {
+        System.out.println(personsRepository.findById(Long.parseLong("1")).toString());
+        return "index";
+    }
+
+/*
+  @Autowired
     private OrgRepository orgRepository;
 
     @Autowired
     private BoutRepository boutRepository;
-/*
  @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("message", "message");
@@ -44,9 +58,7 @@ public class MainController {
         System.out.println(agent);
         return "index";
 
- */
-
-@GetMapping("/")
+        @GetMapping("/")
 public String index(Model model) {
     model.addAttribute("message", "message");
     model.addAttribute("sapbuf", new SapBuf());
@@ -90,6 +102,10 @@ public String index(Model model) {
         return "bacchus";
 
     }
+
+ */
+
+
 
 }
 
